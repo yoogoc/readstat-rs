@@ -24,7 +24,7 @@ use crate::{
     rs_var::ReadStatVar,
 };
 
-#[derive(Default)]
+#[derive(Default, Debug)]
 pub struct ReadStatData {
     // metadata
     pub var_count: i32,

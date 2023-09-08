@@ -1,16 +1,16 @@
 use log::debug;
 use num_derive::FromPrimitive;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::{collections::BTreeMap, os::raw::c_int};
 
 use crate::{common::ptr_to_string, rs_metadata::ReadStatVarMetadata};
 
 // Constants
-const DIGITS: usize = 14;
+// const DIGITS: usize = 14;
 const DAY_SHIFT: i32 = 3653;
 const SEC_SHIFT: i64 = 315619200;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum ReadStatVar {
     ReadStat_String(Option<String>),
     ReadStat_i8(Option<i8>),
@@ -106,12 +106,12 @@ impl ReadStatVar {
                     let value = unsafe { readstat_sys::readstat_float_value(value) };
 
                     // debug
-                    debug!("value (before parsing) is {:#?}", value);
+                    // debug!("value (before parsing) is {:#?}", value);
 
-                    let value: f32 = lexical::parse(format!("{1:.0$}", DIGITS, value)).unwrap();
+                    // let value: f32 = lexical::parse(format!("{1:.0$}", DIGITS, value)).unwrap();
 
                     // debug
-                    debug!("value (after parsing) is {:#?}", value);
+                    debug!("value is {:#?}", value);
 
                     // return
                     Self::ReadStat_f32(Some(value))
@@ -143,12 +143,12 @@ impl ReadStatVar {
                     let value = unsafe { readstat_sys::readstat_double_value(value) };
 
                     // debug
-                    debug!("value (before parsing) is {:#?}", value);
+                    // debug!("value (before parsing) is {:#?}", value);
 
-                    let value: f64 = lexical::parse(format!("{1:.0$}", DIGITS, value)).unwrap();
+                    // let value: f64 = lexical::parse(format!("{1:.0$}", DIGITS, value)).unwrap();
 
                     // debug
-                    debug!("value (after parsing) is {:#?}", value);
+                    debug!("value is {:#?}", value);
 
                     // is double a value or is it really a date, time, or datetime?
                     match var_format_class {
